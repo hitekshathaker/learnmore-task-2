@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <div class="display" id="display">0</div>
+            <div class="buttons">
+                <button class="btn" onclick="clearDisplay()">C</button>
+                <button class="btn" onclick="appendOperator('/')">/</button>
+                <button class="btn" onclick="appendOperator('*')">*</button>
+                <button class="btn" onclick="appendOperator('-')">-</button>
+                <button class="btn" onclick="appendNumber(7)">7</button>
+                <button class="btn" onclick="appendNumber(8)">8</button>
+                <button class="btn" onclick="appendNumber(9)">9</button>
+                <button class="btn" onclick="appendOperator('+')">+</button>
+                <button class="btn" onclick="appendNumber(4)">4</button>
+                <button class="btn" onclick="appendNumber(5)">5</button>
+                <button class="btn" onclick="appendNumber(6)">6</button>
+                <button class="btn" onclick="appendNumber(1)">1</button>
+                <button class="btn" onclick="appendNumber(2)">2</button>
+                <button class="btn" onclick="appendNumber(3)">3</button>
+                <button class="btn" onclick="appendNumber(0)">0</button>
+                <button class="btn" onclick="appendDot()">.</button>
+                <button class="btn equal" onclick="calculateResult()">=</button>
+            </div>
+        </div>
+        <div class="quote">
+            <p>"Mathematics is not about numbers, equations, computations, or algorithms: it is about understanding." - William Paul Thurston</p>
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById('display');
+        let currentInput = '';
+        let operator = null;
+        let previousInput = '';
+
+        function clearDisplay() {
+            currentInput = '';
+            operator = null;
+            previousInput = '';
+            display.textContent = '0';
+        }
+
+        function appendNumber(number) {
+            if (currentInput.includes('.') && number === '.') return;
+            currentInput += number;
+            display.textContent = currentInput;
+        }
+
+        function appendOperator(op) {
+            if (currentInput === '' && previousInput !== '') {
+                operator = op;
+                return;
+            }
+            if (operator) {
+                calculateResult();
+            }
+            operator = op;
+            previousInput = currentInput;
+            currentInput = '';
+        }
+
+        function appendDot() {
+            if (!currentInput.includes('.')) {
+                currentInput += '.';
+                display.textContent = currentInput;
+            }
+        }
+
+        function calculateResult() {
+            if (operator === null || currentInput === '') return;
+
+            let result;
+            const prev = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+
+            switch (operator) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    result = prev / current;
+                    break;
+                default:
+                    return;
+            }
+
+            currentInput = result.toString();
+            operator = null;
+            previousInput = '';
+            display.textContent = currentInput;
+        }
+    </script>
+</body>
+</html>
